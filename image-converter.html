@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to WebP Converter | Your Blogger Site</title>
+    <style>
+        /* Main Container Styles */
+        .webp-converter-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header Styles */
+        .webp-converter-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .webp-converter-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .webp-converter-header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        /* Upload Area Styles */
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: #2980b9;
+            background-color: #f0f8ff;
+        }
+        
+        .upload-area.highlight {
+            border-color: #27ae60;
+            background-color: #e8f5e9;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            color: #34495e;
+        }
+        
+        .upload-text small {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* Options Section */
+        .options-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .options-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .option-group {
+            margin-bottom: 15px;
+        }
+        
+        .option-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        
+        .option-group input[type="range"] {
+            width: 100%;
+        }
+        
+        .quality-value {
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* Results Section */
+        .results-section {
+            display: none;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .results-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .comparison-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .image-box {
+            flex: 1;
+            min-width: 250px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .image-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+        
+        .image-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #2ecc71;
+        }
+        
+        /* Button Styles */
+        .action-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        
+        .action-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .action-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .action-btn.secondary {
+            background-color: #95a5a6;
+        }
+        
+        .action-btn.secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        /* Footer */
+        .converter-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .webp-converter-container {
+                padding: 15px;
+            }
+            
+            .upload-area {
+                padding: 20px;
+            }
+            
+            .comparison-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="webp-converter-container">
+        <div class="webp-converter-header">
+            <h2>Image to WebP Converter</h2>
+            <p>Convert your JPG, JPEG, or PNG images to WebP format for better web performance</p>
+        </div>
+        
+        <div id="uploadArea" class="upload-area">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">
+                Drag & Drop your image here<br>
+                <small>or click to browse files (Supports JPG, JPEG, PNG)</small>
+            </div>
+            <input type="file" id="fileInput" accept="image/jpeg,image/png" style="display: none;">
+        </div>
+        
+        <div class="options-section">
+            <h3>Conversion Options</h3>
+            
+            <div class="option-group">
+                <label for="qualityRange">Quality (1-100):</label>
+                <input type="range" id="qualityRange" min="1" max="100" value="80">
+                <div class="quality-value"><span id="qualityValue">80</span>%</div>
+            </div>
+        </div>
+        
+        <div class="button-container" style="text-align: center;">
+            <button id="convertBtn" class="action-btn" disabled>Convert to WebP</button>
+            <button id="resetBtn" class="action-btn secondary" disabled>Reset</button>
+        </div>
+        
+        <div id="resultsSection" class="results-section">
+            <h3>Conversion Results</h3>
+            <p>WebP images are typically 25-35% smaller than JPEG/PNG with similar quality.</p>
+            
+            <div class="comparison-container">
+                <div class="image-box">
+                    <h4>Original Image</h4>
+                    <img id="originalImage" src="" alt="Original Image">
+                    <div class="image-info">
+                        Format: <span id="originalFormat">-</span><br>
+                        Size: <span id="originalSize">-</span><br>
+                        Dimensions: <span id="originalDimensions">-</span>
+                    </div>
+                </div>
+                
+                <div class="image-box">
+                    <h4>WebP Image</h4>
+                    <img id="webpImage" src="" alt="WebP Image">
+                    <div class="image-info">
+                        Format: WebP<br>
+                        Size: <span id="webpSize">-</span><br>
+                        Dimensions: <span id="webpDimensions">-</span><br>
+                        Reduction: <span id="reductionPercent">-</span>%
+                    </div>
+                    <a id="downloadBtn" class="download-btn" href="#" download="converted.webp">Download WebP</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="converter-footer">
+            <p>WebP conversion happens in your browser - your images are not uploaded to any server.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const convertBtn = document.getElementById('convertBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const resultsSection = document.getElementById('resultsSection');
+            const qualityRange = document.getElementById('qualityRange');
+            const qualityValue = document.getElementById('qualityValue');
+            
+            // Original image elements
+            const originalImage = document.getElementById('originalImage');
+            const originalFormat = document.getElementById('originalFormat');
+            const originalSize = document.getElementById('originalSize');
+            const originalDimensions = document.getElementById('originalDimensions');
+            
+            // WebP image elements
+            const webpImage = document.getElementById('webpImage');
+            const webpSize = document.getElementById('webpSize');
+            const webpDimensions = document.getElementById('webpDimensions');
+            const reductionPercent = document.getElementById('reductionPercent');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            // Variables
+            let selectedFile = null;
+            let originalImageData = null;
+            
+            // Event Listeners
+            uploadArea.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            convertBtn.addEventListener('click', convertToWebP);
+            resetBtn.addEventListener('click', resetConverter);
+            qualityRange.addEventListener('input', updateQualityValue);
+            
+            // Functions
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                processSelectedFile(file);
+            }
+            
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.add('highlight');
+            }
+            
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('highlight');
+            }
+            
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.classList.remove('highlight');
+                
+                const file = e.dataTransfer.files[0];
+                processSelectedFile(file);
+            }
+            
+            function processSelectedFile(file) {
+                if (!file) return;
+                
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPEG, PNG)');
+                    return;
+                }
+                
+                selectedFile = file;
+                
+                // Display file name in upload area
+                uploadArea.querySelector('.upload-text').innerHTML = `
+                    Selected: <strong>${file.name}</strong><br>
+                    <small>Click "Convert to WebP" to proceed</small>
+                `;
+                
+                // Enable buttons
+                convertBtn.disabled = false;
+                resetBtn.disabled = false;
+                
+                // Preview original image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImage.src = e.target.result;
+                    originalImageData = e.target.result;
+                    
+                    // Get image dimensions
+                    const img = new Image();
+                    img.onload = function() {
+                        originalDimensions.textContent = `${this.width} × ${this.height} px`;
+                    };
+                    img.src = e.target.result;
+                    
+                    // Set original format and size
+                    originalFormat.textContent = file.type.split('/')[1].toUpperCase();
+                    originalSize.textContent = formatFileSize(file.size);
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function updateQualityValue() {
+                qualityValue.textContent = qualityRange.value;
+            }
+            
+            function convertToWebP() {
+                if (!selectedFile) return;
+                
+                const quality = parseInt(qualityRange.value) / 100;
+                
+                // Create canvas to draw image
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = this.width;
+                    canvas.height = this.height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(this, 0, 0);
+                    
+                    // Convert to WebP
+                    canvas.toBlob(function(blob) {
+                        const webpUrl = URL.createObjectURL(blob);
+                        
+                        // Display WebP image
+                        webpImage.src = webpUrl;
+                        webpDimensions.textContent = `${canvas.width} × ${canvas.height} px`;
+                        webpSize.textContent = formatFileSize(blob.size);
+                        
+                        // Calculate reduction percentage
+                        const originalSizeBytes = selectedFile.size;
+                        const webpSizeBytes = blob.size;
+                        const reduction = ((originalSizeBytes - webpSizeBytes) / originalSizeBytes * 100).toFixed(1);
+                        reductionPercent.textContent = reduction;
+                        
+                        // Set download link
+                        downloadBtn.href = webpUrl;
+                        downloadBtn.download = selectedFile.name.replace(/\.[^/.]+$/, '') + '.webp';
+                        
+                        // Show results section
+                        resultsSection.style.display = 'block';
+                        
+                        // Scroll to results
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                        
+                    }, 'image/webp', quality);
+                };
+                
+                img.src = originalImageData;
+            }
+            
+            function resetConverter() {
+                // Reset file input
+                fileInput.value = '';
+                selectedFile = null;
+                originalImageData = null;
+                
+                // Reset upload area display
+                uploadArea.querySelector('.upload-text').innerHTML = `
+                    Drag & Drop your image here<br>
+                    <small>or click to browse files (Supports JPG, JPEG, PNG)</small>
+                `;
+                
+                // Reset buttons
+                convertBtn.disabled = true;
+                resetBtn.disabled = true;
+                
+                // Hide results section
+                resultsSection.style.display = 'none';
+                
+                // Reset quality display
+                qualityRange.value = 80;
+                qualityValue.textContent = '80';
+                
+                // Clear image displays
+                originalImage.src = '';
+                webpImage.src = '';
+                
+                // Clear info displays
+                originalFormat.textContent = '-';
+                originalSize.textContent = '-';
+                originalDimensions.textContent = '-';
+                webpSize.textContent = '-';
+                webpDimensions.textContent = '-';
+                reductionPercent.textContent = '-';
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+</body>
+</html>
